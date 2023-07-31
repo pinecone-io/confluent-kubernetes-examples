@@ -1,0 +1,21 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: dynamodbcdc
+  namespace: confluent
+spec:
+  class: "com.trustpilot.connector.dynamodb.DynamoDBSourceConnector"
+  taskMax: 1
+  connectClusterRef:
+    name: connect
+  configs:
+    aws.region: "eu-west-1"
+    aws.access.key.id: "FILL ME IN"
+    aws.secret.key: "FILL ME IN"
+    dynamodb.table.env.tag.key: "environment"
+    dynamodb.table.env.tag.value: "dev"
+    dynamodb.table.ingestion.tag.key: "usekafka"
+    kcl.table.billing.mode: "PROVISIONED"
+    kafka.topic.prefix: "dynamodb-"
+

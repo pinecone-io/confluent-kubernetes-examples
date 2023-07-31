@@ -1,0 +1,29 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connect
+metadata:
+  name: connect
+spec:
+  replicas: 1
+  image:
+    application: confluentinc/cp-server-connect:7.4.0
+    init: confluentinc/confluent-init-container:2.6.0
+  build:
+    type: onDemand
+    onDemand:
+      plugins:
+        locationType: url
+        url:
+          - name: kafka-connect-dynamodb
+            archivePath: https://ivan-connector-testing.s3.eu-west-1.amazonaws.com/pinecone-kafka-connect-dynamodb-0.1.zip
+            checksum: b4c10e714a69cc0caeab3298a531cfdf1ae461f89720f40bf4f253e566362fe4b9983c1f9b4be82825b974835acffb0288ade649889b0dbf2e8f8850cf83e458
+  dependencies:
+    kafka:
+      bootstrapEndpoint: pkc-z9doz.eu-west-1.aws.confluent.cloud:9092
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: ccloud-credentials
+      tls:
+        enabled: true
+        ignoreTrustStoreConfig: true 
